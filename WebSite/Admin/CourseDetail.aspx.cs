@@ -35,13 +35,19 @@ public partial class Admin_CourseDetail : System.Web.UI.Page
     }
     protected void grdcourse_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        Label ID = grdcourse.Rows[e.RowIndex].FindControl("id") as Label;
+        Label ID = grdcourse.Rows[e.RowIndex].FindControl("lblid") as Label;
+        Label cname = grdcourse.Rows[e.RowIndex].FindControl("lblcoursename") as Label;
+        Label cfee = grdcourse.Rows[e.RowIndex].FindControl("lblcfee") as Label;
+        Label cduration = grdcourse.Rows[e.RowIndex].FindControl("lblcduration") as Label;
         try
         {
             SqlCommand cmd = new SqlCommand("sp_tbl_course", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@id", ID.Text.ToString());
-            cmd.Parameters.AddWithValue("@status", "delete");
+            cmd.Parameters.AddWithValue("@Coursename", cname.Text.ToString());
+            cmd.Parameters.AddWithValue("@Coursefee", cfee.Text.ToString());
+            cmd.Parameters.AddWithValue("@duration", cduration.Text.ToString());
+            cmd.Parameters.AddWithValue("@action", "delete");
             con.Open();
             cmd.ExecuteNonQuery();
             Response.Write("<script>alert('Data Deleted Successfully');</script>");
